@@ -84,16 +84,24 @@ export default function Home() {
   useEffect(() => {
     async function fetchCoupons() {
       try {
+        console.log('🔍 开始获取Supabase数据...')
+        console.log('URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
+        
         const { data, error } = await supabase
           .from('coupons')
           .select('*')
           .eq('is_active', true)
           .order('sort_order', { ascending: true })
 
+        console.log('📊 Supabase响应:', { data, error })
+        
         if (error) throw error
+        
+        console.log('✅ 成功获取数据条数:', data?.length)
         setCoupons(data || [])
       } catch (error) {
-        console.error('获取优惠券失败:', error)
+        console.error('❌ 获取优惠券失败:', error)
+        console.log('🔄 使用Mock数据')
         // 如果数据库连接失败，使用Mock数据
         setCoupons([
           {
