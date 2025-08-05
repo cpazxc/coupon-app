@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 interface Coupon {
   id: string
   brand_name: string
+  icon_url: string
   title: string
   description: string
   action_type: 'copy' | 'link'
@@ -118,6 +119,7 @@ export default function Home() {
           {
             id: '1',
             brand_name: '美团',
+            icon_url: 'https://via.placeholder.com/40/ff6900/ffffff?text=美',
             title: '美团28-12/或38-18',
             description: '点击立即进入即可跳转',
             action_type: 'link',
@@ -127,6 +129,7 @@ export default function Home() {
           {
             id: '2',
             brand_name: '饿了么',
+            icon_url: 'https://via.placeholder.com/40/0066ff/ffffff?text=饿',
             title: '饿了么红包',
             description: '每天都有新红包，点击复制口令',
             action_type: 'copy',
