@@ -42,10 +42,20 @@ function CouponCard({ coupon }: { coupon: Coupon }) {
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 mx-4 mb-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center flex-1">
-          <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 mr-3 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <span className="text-xs font-bold text-white">
-              {coupon.brand_name.charAt(0)}
-            </span>
+          <div className="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 mr-3">
+            <img
+              src={coupon.icon_url}
+              alt={coupon.brand_name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                // 如果图标加载失败，显示备用的文字图标
+                target.style.display = 'none'
+                const parent = target.parentElement!
+                parent.className = "w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 mr-3 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
+                parent.innerHTML = `<span class="text-xs font-bold text-white">${coupon.brand_name.charAt(0)}</span>`
+              }}
+            />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-gray-900 text-sm leading-tight mb-1">
