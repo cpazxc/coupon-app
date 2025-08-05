@@ -98,6 +98,7 @@ export default function Home() {
         if (error) throw error
         
         console.log('✅ 成功获取数据条数:', data?.length)
+        console.log('🖼️ 图标URLs:', data?.map(item => ({ brand: item.brand_name, icon: item.icon_url })))
         setCoupons(data || [])
       } catch (error) {
         console.error('❌ 获取优惠券失败:', error)
