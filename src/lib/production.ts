@@ -5,7 +5,8 @@ export const ProductionUtils = {
     if (typeof window === 'undefined') return false;
     
     const hostname = window.location.hostname;
-    return hostname.includes('07540755.xyz') || 
+    return hostname.includes('youhui.nl.edu.kg') || 
+           hostname.includes('07540755.xyz') || 
            hostname.includes('galaxygames.space') ||
            !hostname.includes('localhost');
   },
