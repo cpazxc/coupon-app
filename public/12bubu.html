@@ -379,15 +379,15 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label for="username">管理员账号</label>
-                    <input type="text" id="username" required>
+                    <input type="text" id="username" required placeholder="12bub">
                 </div>
                 <div class="form-group">
-                    <label for="password">管理密码</label>
-                    <input type="password" id="password" required>
+                    <label for="password">大宝生日</label>
+                    <input type="password" id="password" required placeholder="输入4位数字">
                 </div>
                 <div class="form-group">
-                    <label for="securityCode">安全验证码</label>
-                    <input type="password" id="securityCode" required placeholder="请输入4位安全码">
+                    <label for="securityCode">小宝生日</label>
+                    <input type="password" id="securityCode" required placeholder="输入4位数字">
                 </div>
                 <button type="submit" class="btn" id="loginBtn">
                     🔓 安全登录
@@ -518,8 +518,8 @@
         // 安全配置
         const SECURITY_CONFIG = {
             username: '12bub',
-            password: 'Love1220@0430',
-            securityCode: '0412',
+            password: '1220',
+            securityCode: '0430',
             sessionTimeout: 30 * 60 * 1000, // 30分钟
             maxLoginAttempts: 3
         };
