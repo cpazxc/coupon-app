@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "外卖/打车/团购每天领",
+  title: "外卖/奶茶/打车优惠合集",
   description: "每天免费领取美团、饿了么、滴滴打车等优惠券，省钱必备！",
   keywords: "美团优惠券,饿了么红包,滴滴打车券,外卖优惠,省钱",
   viewport: "width=device-width, initial-scale=1",
