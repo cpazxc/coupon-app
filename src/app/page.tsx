@@ -170,7 +170,7 @@ export default function Home() {
         <header className="sticky top-0 bg-white border-b border-gray-100 z-10">
           <div className="px-4 py-4">
             <h1 className="text-lg font-bold text-center text-gray-900">
-              外卖/奶茶/打车优惠合集
+              外卖/奶茶/打车卷每天领
             </h1>
           </div>
         </header>
