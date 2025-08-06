@@ -24,8 +24,8 @@ export default function CouponCard({ coupon }: CouponCardProps) {
           setButtonText(coupon.button_text)
           setIsLoading(false)
         }, 2000)
-      } catch (error) {
-        console.error('复制失败:', error)
+      } catch {
+        // 静默处理复制失败，不显示错误信息
       }
     } else if (coupon.action_type === 'link') {
       window.open(coupon.action_value, '_blank')

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美团/饿了么/打车卷每天领 - 管理系统</title>
+    <title>优惠券后台管理</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -453,7 +453,7 @@
     <!-- 登录页面 -->
     <div id="loginPage" class="login-container">
         <div class="login-box">
-            <h1 class="login-title">🎫 美团/饿了么/打车卷每天领</h1>
+            <h1 class="login-title">🎫 优惠券后台管理</h1>
             <div class="security-notice">
                 <strong>安全提醒：</strong> 此页面为敏感数据管理系统，请确保环境安全。
             </div>
@@ -481,7 +481,7 @@
     <div id="adminPage" class="admin-container">
         <div class="admin-header">
             <div class="admin-header-content">
-                <h1 class="admin-title">🎫 美团/饿了么/打车卷每天领</h1>
+                <h1 class="admin-title">🎫 优惠券后台管理</h1>
                 <div class="admin-user">
                     <span id="currentUser">管理员</span>
                     <button class="btn btn-small" onclick="logout()">🚪 退出登录</button>
@@ -594,6 +594,30 @@
         </div>
     </div>
 
+    <!-- 百度统计 -->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?YOUR_BAIDU_ANALYTICS_ID"; // 请替换为实际的百度统计ID
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+        
+        // 管理后台专用统计函数
+        function trackAdminEvent(category, action, label) {
+            if (typeof _hmt !== 'undefined') {
+                _hmt.push(['_trackEvent', 'Admin-' + category, action, label]);
+            }
+        }
+        
+        function trackAdminPageView(pageName) {
+            if (typeof _hmt !== 'undefined') {
+                _hmt.push(['_trackPageview', '/admin/' + pageName]);
+            }
+        }
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // 安全配置
@@ -690,6 +714,10 @@
                 localStorage.setItem('adminLoginTime', Date.now().toString());
                 document.getElementById('currentUser').textContent = username;
                 loginAttempts = 0;
+                
+                // 跟踪登录成功事件
+                trackAdminEvent('Auth', '登录成功', username);
+                
                 showAdminPage();
                 
             } else {
@@ -717,6 +745,9 @@
             document.getElementById('adminPage').style.display = 'block';
             startSessionTimer();
             await loadCoupons();
+            
+            // 跟踪管理页面访问
+            trackAdminPageView('dashboard');
         }
         
         // 退出登录
@@ -868,6 +899,7 @@
                     
                     if (error) throw error;
                     showAlert('优惠券更新成功', 'success');
+                    trackAdminEvent('Coupon', '更新', couponData.brand_name);
                 } else {
                     // 新增
                     const { error } = await supabase
@@ -876,6 +908,7 @@
                     
                     if (error) throw error;
                     showAlert('优惠券添加成功', 'success');
+                    trackAdminEvent('Coupon', '新增', couponData.brand_name);
                 }
                 
                 closeModal();
@@ -903,6 +936,7 @@
                 if (error) throw error;
                 
                 showAlert('优惠券删除成功', 'success');
+                trackAdminEvent('Coupon', '删除', brandName);
                 await loadCoupons();
             } catch (error) {
                 showAlert('删除失败: ' + error.message, 'danger');
@@ -979,8 +1013,24 @@
             }, 5000);
         }
         
-        // 防止控制台操作
-        console.log = console.warn = console.error = function() {};
+        // 检测是否为生产环境
+        const isProduction = window.location.hostname.includes('07540755.xyz') || 
+                             window.location.hostname.includes('galaxygames.space') ||
+                             !window.location.hostname.includes('localhost');
+        
+        // 生产环境：完全禁用控制台输出和调试功能
+        if (isProduction && typeof console !== 'undefined') {
+            console.log = console.warn = console.error = console.info = console.debug = console.trace = function() {};
+        }
+        
+        // 生产环境：禁用调试器
+        if (isProduction) {
+            setInterval(function() {
+                try {
+                    debugger;
+                } catch(e) {}
+            }, 1000);
+        }
         
         // 防止右键和F12
         document.addEventListener('contextmenu', e => e.preventDefault());

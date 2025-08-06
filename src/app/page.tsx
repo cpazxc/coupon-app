@@ -1,6 +1,8 @@
 'use client'
 
 import { supabase } from '@/lib/supabase'
+import { Analytics } from '@/lib/analytics'
+import '@/lib/production' // 自动初始化生产环境安全措施
 import { useState, useEffect } from 'react'
 
 interface Coupon {
@@ -21,18 +23,25 @@ function CouponCard({ coupon }: { coupon: Coupon }) {
   const handleButtonClick = async () => {
     if (isLoading) return
 
+    // 跟踪按钮点击事件
+    Analytics.trackCouponClick(coupon.brand_name, coupon.action_type, coupon.title)
+
     if (coupon.action_type === 'copy') {
       try {
         await navigator.clipboard.writeText(coupon.action_value)
         setButtonText('复制成功!')
         setIsLoading(true)
         
+        // 跟踪复制成功事件
+        Analytics.trackCopySuccess(coupon.brand_name, coupon.title)
+        
         setTimeout(() => {
           setButtonText(coupon.button_text)
           setIsLoading(false)
         }, 2000)
       } catch (error) {
-        console.error('复制失败:', error)
+        // 跟踪复制失败
+        Analytics.trackError('复制失败', error instanceof Error ? error.message : '未知错误')
       }
     } else if (coupon.action_type === 'link') {
       window.open(coupon.action_value, '_blank')
@@ -103,8 +112,13 @@ export default function Home() {
 
         if (error) throw error
         setCoupons(data || [])
+        
+        // 跟踪数据加载成功
+        Analytics.trackEvent('数据加载', '成功', '优惠券列表', data?.length || 0)
       } catch (error) {
-        console.error('获取优惠券失败:', error)
+        // 跟踪数据加载失败
+        Analytics.trackError('数据加载失败', error instanceof Error ? error.message : '未知错误')
+        
         // 如果数据库连接失败，使用Mock数据
         setCoupons([
           {
@@ -128,12 +142,18 @@ export default function Home() {
             button_text: '点我复制口令'
           }
         ])
+        
+        // 跟踪使用Mock数据
+        Analytics.trackEvent('数据加载', 'Mock数据', '备用数据', 2)
       } finally {
         setLoading(false)
       }
     }
 
     fetchCoupons()
+    
+    // 跟踪页面访问
+    Analytics.trackPageView('/优惠券首页')
   }, [])
 
   if (loading) {
