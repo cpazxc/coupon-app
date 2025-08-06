@@ -172,6 +172,9 @@ export default function Home() {
             <h1 className="text-lg font-bold text-center text-gray-900">
               外卖/奶茶/打车卷每天领
             </h1>
+            <p className="text-sm text-gray-500 text-center mt-1">
+              每天更新，可收藏领取
+            </p>
           </div>
         </header>
 
